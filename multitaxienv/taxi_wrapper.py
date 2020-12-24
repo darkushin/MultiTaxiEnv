@@ -1,6 +1,7 @@
 # In this file we will implement the taxi wrapper
 import networkx as nx
 
+
 MAP = [
     "+---------+",
     "|X: |F: :X|",
@@ -10,6 +11,7 @@ MAP = [
     "|X| :G|X: |",
     "+---------+",
 ]
+
 
 class TaxiMap:
     def __init__(self, desc: list):
@@ -29,15 +31,12 @@ class TaxiMap:
                 self.graph.add_edge(i, self.cors_to_node(row, col + 1))
 
     def node_to_cors(self, node) -> (int, int):
-        """Converts node id to grid coordinates."""
         return node // self.cols, node % self.cols
 
     def cors_to_node(self, row, col) -> int:
-        """Converts grid coordinates to node id."""
         return row * self.cols + col
 
     def get_path(self, origin: (int, int), target: (int, int)):
-        """Gets the shortest path from <origin> to <path>."""
         node_origin, node_target = self.cors_to_node(*origin), self.cors_to_node(*target)
         if node_origin == node_target:
             return [origin], []
@@ -77,5 +76,5 @@ class Taxi:
         self.path_actions = actions
 
     def get_next_step(self):
-        return
+        return 
 
