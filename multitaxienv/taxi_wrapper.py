@@ -1,6 +1,15 @@
 # In this file we will implement the taxi wrapper
 import networkx as nx
 
+MAP = [
+    "+---------+",
+    "|X: |F: :X|",
+    "| : | : : |",
+    "| : : : : |",
+    "| | : | : |",
+    "|X| :G|X: |",
+    "+---------+",
+]
 
 class TaxiMap:
     def __init__(self, desc: list):
@@ -48,4 +57,25 @@ class TaxiMap:
                 actions.append(0)
         return cord_path, actions
 
+
+class Taxi:
+    def __init__(self, location):
+        self.current_location = location
+        # self.destination = destination
+        self.path_to_dist = []
+        self.path_actions = []
+        self.taxi_map = TaxiMap(MAP)
+
+    def compute_path(self, dest: list):
+        """
+        Given a destination point represented by a list of [row, column], compute the shortest path to the given
+        destination from the current location of the taxi.
+        :param dest: the destination the taxi should go to.
+        """
+        cord_path, actions = self.taxi_map.get_path(self.current_location, dest)
+        self.path_to_dist = cord_path
+        self.path_actions = actions
+
+    def get_next_step(self):
+        return
 
