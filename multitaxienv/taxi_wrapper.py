@@ -38,6 +38,7 @@ class TaxiMap:
 
     def get_path(self, origin: (int, int), target: (int, int)):
         node_origin, node_target = self.cors_to_node(*origin), self.cors_to_node(*target)
+        # Todo: check with Nir why we return the origin in this case
         if node_origin == node_target:
             return [origin], []
 
@@ -54,27 +55,30 @@ class TaxiMap:
                 actions.append(1)
             else:  # South
                 actions.append(0)
-        return cord_path, actions
+        return cord_path[1:], actions
 
 
 class Taxi:
     def __init__(self, location):
         self.current_location = location
-        # self.destination = destination
-        self.path_to_dist = []
+        self.path_cords = []
         self.path_actions = []
         self.taxi_map = TaxiMap(MAP)
 
-    def compute_path(self, dest: list):
+    def compute_shortest_path(self, dest: list):
         """
         Given a destination point represented by a list of [row, column], compute the shortest path to the given
         destination from the current location of the taxi.
         :param dest: the destination the taxi should go to.
         """
         cord_path, actions = self.taxi_map.get_path(self.current_location, dest)
-        self.path_to_dist = cord_path
+        self.path_cords = cord_path
         self.path_actions = actions
 
     def get_next_step(self):
-        return 
+        if self.path_cords and self.path_actions:
+            next_coordination = self.path_cords.pop(0)
+            next_action = self.path_actions.pop(0)
+            self.current_location = next_coordination
+            return next_coordination, next_action
 
