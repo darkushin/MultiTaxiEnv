@@ -10,17 +10,27 @@ env.reset()
 env.s = 1022
 env.render()
 
-# Initialize a new taxi object for the taxi, compute the shortest path to the point [4,4]:
-cur_state = env.state
-taxis_location = cur_state[0]
-taxi1 = Taxi(taxis_location[0])
-taxi1.compute_shortest_path([4, 4])
+# Initialize a new taxi object for the taxi, and send it to pick up the second passenger:
+taxi1 = Taxi(env, taxi_index=0, passenger_index=1)
+taxi1.compute_shortest_path(dest=env.state[2][1])
 print(f'PATH: {taxi1.path_cords}, ACTIONS: {taxi1.path_actions}')
-
-# Move the taxi to the destination and visualize the map
 while taxi1.path_cords:
     env.step([taxi1.get_next_step()[1]])
     env.render()
+
+# Pickup the taxi:
+env.step([4])
+
+# Compute path to passenger's destination and drop her off there.
+taxi1.compute_shortest_path()
+print(f'PATH: {taxi1.path_cords}, ACTIONS: {taxi1.path_actions}')
+while taxi1.path_cords:
+    env.step([taxi1.get_next_step()[1]])
+    env.render()
+
+# drop off the passenger at the destination and show the env state:
+env.step([5])
+env.render()
 
 
 
